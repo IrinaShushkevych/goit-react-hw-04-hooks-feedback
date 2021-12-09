@@ -9,11 +9,7 @@ export default function App() {
   const [voice, setVoice] = useState({ good: 0, neutral: 0, bad: 0 });
 
   const onSetVoice = (type) => {
-    setVoice((prevState) => {
-      const obj = { ...prevState };
-      obj[type] += 1;
-      return obj;
-    });
+    setVoice((prevState) => ({ ...prevState, [type]: prevState[type] + 1 }));
   };
 
   const objKey = Object.keys(voice);
