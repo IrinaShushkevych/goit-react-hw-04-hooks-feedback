@@ -5,26 +5,41 @@ import Feedback from "./components/Feedback/Feedback";
 import Statistics from "./components/Statistics/Statistics";
 import Notification from "./components/Notification/Notification";
 
+const types = ["good", "neutral", "bad"];
+
 export default function App() {
-  const [voice, setVoice] = useState({ good: 0, neutral: 0, bad: 0 });
+  const [good, setGood] = useState(0);
+  const [neutral, setNeutral] = useState(0);
+  const [bad, setBad] = useState(0);
 
   const onSetVoice = (type) => {
-    setVoice((prevState) => ({ ...prevState, [type]: prevState[type] + 1 }));
+    switch (type) {
+      case "good":
+        setGood((state) => state + 1);
+        break;
+      case "neutral":
+        setNeutral((state) => state + 1);
+        break;
+      case "bad":
+        setBad((state) => state + 1);
+        break;
+      default:
+        break;
+    }
   };
 
-  const objKey = Object.keys(voice);
-  const total = objKey.reduce((total, el) => (total += voice[el]), 0);
-  const positive = Math.round((voice.good / total) * 100);
+  const total = good + neutral + bad;
+  const positive = Math.round((good / total) * 100);
 
   return (
     <div className="App">
       <Container title="Please leave feedback">
-        <Feedback options={objKey} addVoice={onSetVoice} />
+        <Feedback options={types} addVoice={onSetVoice} />
       </Container>
       <Container title="Statistics">
         {total > 0 ? (
           <Statistics
-            options={voice}
+            options={{ good, neutral, bad }}
             total={total}
             positivePercentage={positive}
           />
